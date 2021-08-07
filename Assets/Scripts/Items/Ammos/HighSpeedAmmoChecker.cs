@@ -13,6 +13,9 @@ namespace YourName.SurvivalShooter.Weapons
         private float m_PartialExtent;
         private float m_SqrtMinimumExtent;
         private Vector3 m_PreviousPosition;
+        private RaycastHit[] m_RaycastHits = new RaycastHit[2];
+
+        public Vector3 GetPreviousPosition { get => m_PreviousPosition; }
 
         private void Start()
         {
@@ -35,17 +38,27 @@ namespace YourName.SurvivalShooter.Weapons
             if (movementSqrMagnitude > m_SqrtMinimumExtent)
             {
                 float movementMagnitude = Mathf.Sqrt(movementSqrMagnitude);
-                
-                if (Physics.Raycast(
+
+                int hitCount = Physics.RaycastNonAlloc(
                     m_PreviousPosition,
                     movementThisStep,
-                    out RaycastHit hitInfo,
+                    m_RaycastHits,
                     movementMagnitude,
-                    m_Layermask.value))
+                    m_Layermask);
+
+                if (hitCount != 0)
                 {
-                    if (hitInfo.collider.isTrigger) m_Ammo.OnCheckCollision(hitInfo.collider);
-                    else
-                        m_Rigidbody.position = hitInfo.point - (movementThisStep / movementMagnitude) * m_PartialExtent;
+                    for (int i = 0; i < hitCount; ++i)
+                    {
+                        ref var hitInfo = ref m_RaycastHits[i];
+                        if (hitInfo.collider != m_Collider)
+                        {
+                            m_Ammo.OnCheckCollision(hitInfo.collider);
+                            break;
+                        }
+                        else
+                            m_Rigidbody.position = hitInfo.point - (movementThisStep / movementMagnitude) * m_PartialExtent;
+                    }
                 }
             }
 

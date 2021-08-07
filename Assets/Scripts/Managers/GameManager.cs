@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     }
 
     public static int FloorLayerMask { get; private set; } = 0;
+    public static int EnemyLayerMask { get; private set; } = 0;
 
     private void Start()
     {
@@ -36,6 +37,7 @@ public class GameManager : MonoBehaviour
         //  LayerMask ?
         //  유니티에서 tag 와 layer 가 있는데, layer 의 이름을 찾아서 값을 가지고 온다
         FloorLayerMask = 1 << LayerMask.NameToLayer("Floor");
+        EnemyLayerMask = 1 << LayerMask.NameToLayer("Enemy");
 
         DontDestroyOnLoad(this);
     }

@@ -61,5 +61,10 @@ namespace YourName.SurvivalShooter.Characters
             m_Animator.SetBool("IsWalking", isWalking);
         }
 
+        public void Death()
+        {
+            m_Animator.SetBool("IsDead", true);
+        }
+
     }
 }
