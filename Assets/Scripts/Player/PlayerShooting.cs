@@ -5,7 +5,10 @@ namespace YourName.SurvivalShooter.Characters
 {
     public class PlayerShooting : MonoBehaviour
     {
-        public BaseWeapon CurrentWeapon;
+        public BaseWeapon CurrentWeapon
+        {
+            get => PlayerStatus.Get.Inventory.Weapon;
+        }
 
         private void Update()
         {

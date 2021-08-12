@@ -9,15 +9,24 @@ public class GameManager : MonoBehaviour
     {
         get
         {
-            if (m_Instance == null) m_Instance = FindObjectOfType<GameManager>();
+            if (m_Instance == null)
+            {
+                m_Instance = FindObjectOfType<GameManager>();
+                if (m_Instance == null)
+                {
+                    m_Instance = new GameObject("GameManager").AddComponent<GameManager>();
+                    DontDestroyOnLoad(m_Instance.gameObject);
+                }
+            }
             return m_Instance;
         }
     }
 
-    public static int FloorLayerMask { get; private set; } = 0;
-    public static int EnemyLayerMask { get; private set; } = 0;
+    public int FloorLayerMask { get; private set; } = 0;
+    public int EnemyLayerMask { get; private set; } = 0;
+    public int NPCLayerMask { get; private set; } = 0;
 
-    private void Start()
+    private void Awake()
     {
         //  Bitmask ??
         //  1 byte = 8 bit
@@ -38,8 +47,7 @@ public class GameManager : MonoBehaviour
         //  유니티에서 tag 와 layer 가 있는데, layer 의 이름을 찾아서 값을 가지고 온다
         FloorLayerMask = 1 << LayerMask.NameToLayer("Floor");
         EnemyLayerMask = 1 << LayerMask.NameToLayer("Enemy");
-
-        DontDestroyOnLoad(this);
+        NPCLayerMask = 1 << LayerMask.NameToLayer("NPC");
     }
 
 }

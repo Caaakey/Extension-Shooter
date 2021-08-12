@@ -16,10 +16,10 @@ public class PlayerStatus : MonoBehaviour
         }
     }
 
-    public float MaxHP;
-    public int Money;
-    public int Level;
-    public int Experience;
+    public float MaxHP = 100;
+    public int Money = 0;
+    public int Level = 0;
+    public int Experience = 0;
     public bool IsDeath = false;
     [SerializeField] private AudioClip m_DeathClip;
     private AudioSource m_AudioSource;
@@ -38,6 +38,7 @@ public class PlayerStatus : MonoBehaviour
 
     public PlayerMovement Movement { get; private set; } = null;
     public PlayerShooting Shooting { get; private set; } = null;
+    public PlayerInventory Inventory { get; private set; } = null;
     public Transform PlayerTransform { get => m_PlayerTransform; }
 
     private void Awake()
@@ -45,11 +46,12 @@ public class PlayerStatus : MonoBehaviour
         m_AudioSource = GetComponent<AudioSource>();
         Movement = FindObjectOfType<PlayerMovement>();
         Shooting = FindObjectOfType<PlayerShooting>();
+        Inventory = FindObjectOfType<PlayerInventory>();
         m_PlayerTransform = Movement.transform;
 
         CurrentHP = MaxHP;
 
-        DontDestroyOnLoad(this);
+        DontDestroyOnLoad(gameObject);
     }
 
     public void Hit(float damage)

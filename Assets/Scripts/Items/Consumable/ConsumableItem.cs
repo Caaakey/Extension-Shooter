@@ -31,7 +31,5 @@ namespace YourName.SurvivalShooter
             }
         }
 
-        public abstract void Use();
-
     }
 }

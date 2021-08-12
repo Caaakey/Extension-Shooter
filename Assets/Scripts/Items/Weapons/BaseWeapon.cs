@@ -25,6 +25,7 @@ namespace YourName.SurvivalShooter.Weapons
 
         public int CurrentAmmos { get; private set; } = 0;          //  현재 총알 개수
         public bool IsReloading { get => m_ReloadFunc != null; }    //  리로드 중 인가?
+        protected BaseAmmo GetAmmo { get => PlayerStatus.Get.Inventory.Ammo; }
 
         private void Awake()
         {

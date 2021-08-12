@@ -47,7 +47,7 @@ namespace YourName.SurvivalShooter.Characters
             //  레이저를 첫 번째로 맞은 데이터를 가져온다
             //  1. Z 축 기준(카메라 Z축 앞 방향 기준)으로 맨 처음 레이저를 맞은 녀석 데이터를 갖고온다
             //  2. Collider 가 있는 녀석들만 맞는다
-            if (Physics.Raycast(ray, out RaycastHit hit, 100f, GameManager.FloorLayerMask))
+            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, GameManager.Get.FloorLayerMask))
             {
                 //  RaycastHit 에서 레이저의 위치는 point 에서 가지고 올 수 있다
                 Vector3 point = hit.point - transform.position;

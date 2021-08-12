@@ -26,7 +26,7 @@ namespace YourName.SurvivalShooter.Weapons
         public void OnCheckCollision(Collider other)
         {
             int layerMask = 1 << other.gameObject.layer;
-            if (layerMask == GameManager.EnemyLayerMask)
+            if (layerMask == GameManager.Get.EnemyLayerMask)
             {
                 Enemys.EnemyHealth health = other.GetComponent<Enemys.EnemyHealth>();
                 health.Hit(TotalDamage, Quaternion.LookRotation(m_Checker.GetPreviousPosition - transform.position));

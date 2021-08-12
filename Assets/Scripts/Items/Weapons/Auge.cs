@@ -2,7 +2,7 @@
 
 namespace YourName.SurvivalShooter.Weapons
 {
-    public class DefaultWeapon : BaseWeapon
+    public class Auge : BaseWeapon
     {
         public override void Buy()
         {

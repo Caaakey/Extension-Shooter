@@ -9,5 +9,10 @@ namespace YourName.SurvivalShooter
     public abstract class BaseItem : MonoBehaviour
     {
         public int Price;
+
+        public abstract void Buy();
+        public abstract void Sell();
+        public abstract void Use();
+
     }
 }
