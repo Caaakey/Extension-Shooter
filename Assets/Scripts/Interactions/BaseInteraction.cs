@@ -9,6 +9,7 @@ namespace YourName.SurvivalShooter.Interactions
         [SerializeField] private UnityEngine.UI.Image m_SpeechBubble;
         private IEnumerator m_CurrentUpdate = null;
         protected bool IsEnterPlayer = false;
+        protected bool IsStartInteractive = false;
 
         private float BubbleAlpha
         {
@@ -35,7 +36,7 @@ namespace YourName.SurvivalShooter.Interactions
 
         protected virtual void Update()
         {
-            if (IsEnterPlayer)
+            if (!IsStartInteractive && IsEnterPlayer)
             {
                 if (Input.GetMouseButtonDown(0))
                 {
@@ -43,10 +44,13 @@ namespace YourName.SurvivalShooter.Interactions
                     if (Physics.Raycast(ray, out var hit, Mathf.Infinity, GameManager.Get.NPCLayerMask))
                     {
                         if (hit.collider.gameObject.name == "NPC")
-                            StartInteraction();
+                            BeginInteraction();
                     }
                 }
             }
+
+            if (Input.GetKeyDown(KeyCode.Escape))
+                EndInteraction();
         }
 
         private void OnTriggerEnter(Collider other)
@@ -63,6 +67,24 @@ namespace YourName.SurvivalShooter.Interactions
 
             IsEnterPlayer = false;
             CurrentUpdator = UpdateExit();
+
+            EndInteraction();
+        }
+
+        private void BeginInteraction()
+        {
+            if (IsStartInteractive) return;
+
+            OnStartInteraction();
+            IsStartInteractive = true;
+        }
+
+        private void EndInteraction()
+        {
+            if (!IsStartInteractive) return;
+
+            OnEndInteraction();
+            IsStartInteractive = false;
         }
 
         protected virtual IEnumerator UpdateEnter()
@@ -99,6 +121,7 @@ namespace YourName.SurvivalShooter.Interactions
             yield break;
         }
 
-        protected abstract void StartInteraction();
+        protected abstract void OnStartInteraction();
+        protected abstract void OnEndInteraction();
     }
 }

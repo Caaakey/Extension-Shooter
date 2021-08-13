@@ -8,9 +8,24 @@ namespace YourName.SurvivalShooter.Characters
 {
     public class PlayerInventory : MonoBehaviour
     {
+        public int this[string str]
+        {
+            get
+            {
+                if (m_Items.ContainsKey(str))
+                    return m_Items[str];
+
+                return 0;
+            }
+        }
+
         [SerializeField] private Transform m_WeaponTransform;
         [SerializeField] private BaseWeapon m_Weapon;
         [SerializeField] private BaseAmmo m_Ammo;
+        private Dictionary<string, int> m_Items = new Dictionary<string, int>()
+        {
+            { "DefaultWeapon", 1 }
+        };
 
         private void Awake()
         {
@@ -30,6 +45,9 @@ namespace YourName.SurvivalShooter.Characters
                 newWeapon.transform.localPosition = Vector3.zero;
                 newWeapon.transform.localRotation = Quaternion.identity;
                 newWeapon.name = newWeapon.name.Substring(0, newWeapon.name.Length - 7);
+
+                if (!m_Items.ContainsKey(newWeapon.name))
+                    m_Items.Add(newWeapon.name, 1);
 
                 Destroy(m_Weapon.gameObject);
                 m_Weapon = newWeapon;

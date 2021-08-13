@@ -7,11 +7,15 @@ namespace YourName.SurvivalShooter.Interactions.NPCs
     {
         [SerializeField] private GameObject m_WeaponUI;
 
-        protected override void StartInteraction()
+        protected override void OnStartInteraction()
         {
             m_WeaponUI.SetActive(true);
         }
 
+        protected override void OnEndInteraction()
+        {
+            m_WeaponUI.SetActive(false);
+        }
         
     }
 }

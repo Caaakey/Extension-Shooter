@@ -5,19 +5,25 @@ namespace YourName.SurvivalShooter
     using Characters;
     public class CameraFollow : MonoBehaviour
     {
-        public PlayerMovement m_Player; //  플레이어 위치 가져올 컴포넌트
         public float SmoothSpeed = 5f;  //  카메라 이동할 때 스무딩할 속도
         public float ZoomScale = 2f;    //  오른쪽 클릭할 때 줌아웃 할 수 있는 거리
-        private Vector3 m_Offset;       //  초기 카메라 위치 저장할 오프셋
+        private Vector3 m_Offset = Vector3.zero;       //  초기 카메라 위치 저장할 오프셋
 
-        private void Start()
+        private void Awake()
         {
-            m_Offset = transform.position - m_Player.transform.position;
+            DontDestroyOnLoad(gameObject);
         }
 
         private void FixedUpdate()
         {
-            Vector3 cameraPosition = m_Player.transform.position + m_Offset;
+            var playerTrasnform = PlayerStatus.Get.PlayerTransform;
+            if (playerTrasnform == null) return;
+            else if (m_Offset == Vector3.zero)
+            {
+                m_Offset = transform.position - playerTrasnform.position;
+            }
+
+            Vector3 cameraPosition = playerTrasnform.position + m_Offset;
 
             if (Input.GetMouseButton(1))
             {

@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace YourName.SurvivalShooter.Weapons
 {
+    using UI;
     public abstract class BaseWeapon : BaseItem
     {
         [Header("Weapon System", order = 0)]
@@ -22,10 +23,21 @@ namespace YourName.SurvivalShooter.Weapons
         private float m_CurrentWeaponDelay = 0;     //  총기 재장전 중 걸린 시간
         private AudioSource m_AudioSource;          //  총기 사운드 관리 컴포넌트
         private IEnumerator m_ReloadFunc;           //  리로르 함수
+        private ShowMagazine m_magazineText = null;
 
         public int CurrentAmmos { get; private set; } = 0;          //  현재 총알 개수
         public bool IsReloading { get => m_ReloadFunc != null; }    //  리로드 중 인가?
         protected BaseAmmo GetAmmo { get => PlayerStatus.Get.Inventory.Ammo; }
+        private ShowMagazine MagazineText
+        {
+            get
+            {
+                if (m_magazineText == null)
+                    m_magazineText = FindObjectOfType<ShowMagazine>();
+
+                return m_magazineText;
+            }
+        }
 
         private void Awake()
         {
@@ -33,6 +45,12 @@ namespace YourName.SurvivalShooter.Weapons
             m_AudioSource.clip = m_ShootClip;
 
             CurrentAmmos = Magazine;
+        }
+
+        public void RepaintMagazine()
+        {
+            if (MagazineText != null)
+                MagazineText.TextString = $"{CurrentAmmos}/{Magazine}";
         }
 
         //  virtual ? 가상
@@ -60,6 +78,7 @@ namespace YourName.SurvivalShooter.Weapons
                 m_CurrentWeaponDelay = Time.time + FireDelayTime;
 
                 CreateAmmo();
+                RepaintMagazine();
             }
 
             m_AudioSource.Play();
@@ -92,6 +111,8 @@ namespace YourName.SurvivalShooter.Weapons
             m_AudioSource.clip = m_ShootClip;
 
             m_ReloadFunc = null;
+            RepaintMagazine();
+
             yield break;
         }
 

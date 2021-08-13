@@ -5,22 +5,33 @@ namespace YourName.SurvivalShooter.Interactions
 {
     public class WeaponUI : MonoBehaviour
     {
-        private void OnEnable()
+        [SerializeField] private UnityEngine.UI.Text m_MoneyText;
+        private WeaponItemObject[] m_ItemObjects = null;
+
+        private void Awake()
+        {
+            m_ItemObjects = GetComponentsInChildren<WeaponItemObject>();
+        }
+
+        public void OnEnable()
         {
             PlayerStatus.Get.Shooting.enabled = false;
             PlayerStatus.Get.Movement.enabled = false;
+
+            Refresh();
         }
 
-        private void OnDisable()
+        public void OnDisable()
         {
             PlayerStatus.Get.Shooting.enabled = true;
             PlayerStatus.Get.Movement.enabled = true;
         }
 
-        private void Update()
+        public void Refresh()
         {
-
-            if (Input.GetKeyDown(KeyCode.Escape)) gameObject.SetActive(false);
+            m_MoneyText.text = $"Money : {PlayerStatus.Get.Money}";
+            for (int i = 0; i < m_ItemObjects.Length; ++i)
+                m_ItemObjects[i].OnEnable();
         }
 
     }

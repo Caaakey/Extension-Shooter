@@ -7,8 +7,7 @@ namespace YourName.SurvivalShooter.Weapons
         public override void Buy()
         {
             if (PlayerStatus.Get.Inventory.Weapon.name == name) return;
-            if (PlayerStatus.Get.Money >= Price)
-                PlayerStatus.Get.Inventory.Weapon = this;
+            PlayerStatus.Get.Inventory.Weapon = this;
         }
 
         public override void Sell()
